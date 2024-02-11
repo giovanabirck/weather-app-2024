@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import Image from "next/image";
+import { useState } from "react";
 
 const apiKey = process.env.NEXT_PUBLIC_API;
 
@@ -75,11 +76,23 @@ export default function Home() {
           {weatherData && (
             <div>
               <h2 className="forecastWeatherCityName">Weather in <span className="forecastCityName">{weatherData.name}</span></h2>
-              <div className="currentWeatherInfo">
-                <p className="currentWeatherTemp">{(weatherData.main.temp).toFixed(0)}<span className="forecastTemp">°C</span></p>
-                <p>{weatherData.weather[0].main}</p>
-                <p>Wind: {(weatherData.wind.speed * 3.6).toFixed(1)}km/h</p>
+              <div className="currentWeatherMain">
+                <div>
+                  <Image
+                    src={`icons/current/${weatherData.weather[0].icon}.svg`}
+                    width={200}
+                    height={100}
+                    alt={weatherData.weather[0].main}
+                  />
+                </div>
+
+                <div className="currentWeatherInfo">
+                  <p className="currentWeatherTemp">{(weatherData.main.temp).toFixed(0)}<span className="forecastTemp">°C</span></p>
+                  <p>{weatherData.weather[0].main}</p>
+                  <p>Wind: {(weatherData.wind.speed * 3.6).toFixed(1)}km/h</p>
+                </div>
               </div>
+
               <p>Last Updated: <br/> {lastUpdated}</p>
             </div>
           )}
@@ -97,12 +110,18 @@ export default function Home() {
               </div>
 
               <div>
-                  <p>{fiveDaysWeather.list[0].weather[0].main}</p>
+                <Image
+                  src={`icons/forecast/${fiveDaysWeather.list[0].weather[0].icon}.svg`}
+                  width={40}
+                  height={40}
+                  alt={fiveDaysWeather.list[0].weather[0].main}
+                />
+                <p>{fiveDaysWeather.list[0].weather[0].main}</p>
               </div>
 
               <div className="forecastWeather">
-                  <p>{fiveDaysWeather.list[0].weather[0].description}</p>
-                  <p>Wind: {(fiveDaysWeather.list[0].wind.speed * 3.6).toFixed(1)}km/h</p>
+                <p>{fiveDaysWeather.list[0].weather[0].description}</p>
+                <p>Wind: {(fiveDaysWeather.list[0].wind.speed * 3.6).toFixed(1)}km/h</p>
               </div>
             </div>
           )}
@@ -118,12 +137,18 @@ export default function Home() {
               </div>
 
               <div>
-                  <p>{fiveDaysWeather.list[8].weather[0].main}</p>
+                <Image
+                  src={`icons/forecast/${fiveDaysWeather.list[8].weather[0].icon}.svg`}
+                  width={40}
+                  height={40}
+                  alt={fiveDaysWeather.list[8].weather[0].main}
+                />
+                <p>{fiveDaysWeather.list[8].weather[0].main}</p>
               </div>
 
               <div className="forecastWeather">
-                  <p>{fiveDaysWeather.list[8].weather[0].description}</p>
-                  <p>Wind: {(fiveDaysWeather.list[8].wind.speed * 3.6).toFixed(1)}km/h</p>
+                <p>{fiveDaysWeather.list[8].weather[0].description}</p>
+                <p>Wind: {(fiveDaysWeather.list[8].wind.speed * 3.6).toFixed(1)}km/h</p>
               </div>
             </div>
           )}
@@ -139,12 +164,18 @@ export default function Home() {
               </div>
 
               <div>
-                  <p>{fiveDaysWeather.list[16].weather[0].main}</p>
+                <Image
+                  src={`icons/forecast/${fiveDaysWeather.list[16].weather[0].icon}.svg`}
+                  width={40}
+                  height={40}
+                  alt={fiveDaysWeather.list[16].weather[0].main}
+                />
+                <p>{fiveDaysWeather.list[16].weather[0].main}</p>
               </div>
 
               <div className="forecastWeather">
-                  <p>{fiveDaysWeather.list[16].weather[0].description}</p>
-                  <p>Wind: {(fiveDaysWeather.list[16].wind.speed * 3.6).toFixed(1)}km/h</p>
+                <p>{fiveDaysWeather.list[16].weather[0].description}</p>
+                <p>Wind: {(fiveDaysWeather.list[16].wind.speed * 3.6).toFixed(1)}km/h</p>
               </div>
             </div>
           )}
@@ -160,12 +191,18 @@ export default function Home() {
               </div>
 
               <div>
-                  <p>{fiveDaysWeather.list[24].weather[0].main}</p>
+                <Image
+                  src={`icons/forecast/${fiveDaysWeather.list[24].weather[0].icon}.svg`}
+                  width={40}
+                  height={40}
+                  alt={fiveDaysWeather.list[24].weather[0].main}
+                />
+                <p>{fiveDaysWeather.list[24].weather[0].main}</p>
               </div>
 
               <div className="forecastWeather">
-                  <p>{fiveDaysWeather.list[24].weather[0].description}</p>
-                  <p>Wind: {(fiveDaysWeather.list[24].wind.speed * 3.6).toFixed(1)}km/h</p>
+                <p>{fiveDaysWeather.list[24].weather[0].description}</p>
+                <p>Wind: {(fiveDaysWeather.list[24].wind.speed * 3.6).toFixed(1)}km/h</p>
               </div>
             </div>
           )}
@@ -181,12 +218,18 @@ export default function Home() {
               </div>
 
               <div>
-                  <p>{fiveDaysWeather.list[32].weather[0].main}</p>
+                <Image
+                  src={`icons/forecast/${fiveDaysWeather.list[32].weather[0].icon}.svg`}
+                  width={40}
+                  height={40}
+                  alt={fiveDaysWeather.list[32].weather[0].main}
+                />
+                <p>{fiveDaysWeather.list[32].weather[0].main}</p>
               </div>
 
               <div className="forecastWeather">
-                  <p>{fiveDaysWeather.list[32].weather[0].description}</p>
-                  <p>Wind: {(fiveDaysWeather.list[32].wind.speed * 3.6).toFixed(1)}km/h</p>
+                <p>{fiveDaysWeather.list[32].weather[0].description}</p>
+                <p>Wind: {(fiveDaysWeather.list[32].wind.speed * 3.6).toFixed(1)}km/h</p>
               </div>
             </div>
           )}

@@ -29,6 +29,13 @@ body {
   padding: 40px 80px;
 }
 
+.currentWeatherMain {
+  display: flex;
+  flex-direction: row;
+  align-self: center;
+  column-gap: 100px;
+}
+
 .fiveDays{
   width: 40vw;
   height: 88vh;
@@ -117,13 +124,14 @@ body {
 }
 
 .currentWeatherInfo {
-  margin-bottom: 80px;
+  margin-bottom: 200px;
 }
 
 .currentWeatherTemp {
   font-size: 100px;
   font-weight: bolder;
   line-height: 1;
+  padding-top: 16px;
 }
 
 .forecastDate {
