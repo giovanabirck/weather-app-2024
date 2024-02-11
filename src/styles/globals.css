@@ -22,10 +22,16 @@ body {
   color: #2D2C2C;
 }
 
+.mainContainer{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-items: space-between;
+}
+
 .currentWeather{
   width: 60vw;
   height: 88vh;
-  /* border: solid 1px black; */
   padding: 40px 80px;
 }
 
@@ -48,7 +54,7 @@ body {
 .appName{
   font-weight: bolder;
   font-size: 24px;
-  height:8vh;
+  height: 8vh;
   display: flex;
   align-items: center;
   color: #2D2C2C;
@@ -152,5 +158,133 @@ span{
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+}
+
+@media only screen and (min-device-width: 1024px) and (max-device-width: 1366px){
+
+  .appName{
+    height:6vh;
+  }
+
+  .mainContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-items: space-between;
+  }
+  
+  .currentWeather{
+    width: 100vw;
+    height: 35vh;
+    padding: 40px 80px;
+  }
+  
+  .fiveDays{
+    width: 100vw;
+    height: 55vh;
+    padding: 32px 80px;
+  }
+  
+  .search {
+    padding: 12px;
+    width: 50vw;
+    margin-bottom: 32px;
+    font-size: 24px;
+  }
+  
+  .forecast {
+    justify-content: space-between;
+  }
+  
+  .forecastWeatherCityName {
+    margin-bottom: 8px;
+  }
+  
+  .forecastTemp {
+    font-size: 32px;
+  }
+  
+  .currentWeatherInfo {
+    margin-bottom: 0px;
+  }
+  
+  .forecastTemp {
+    font-size: 40px;
+  }
+
+  .forecastIconMain {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-size: 24px;
+    column-gap: 4vw;
+  }
+
+  .forecastIconSize {
+    width: 80px;
+    height: 80px;
+  }
+}
+
+@media only screen and (min-device-width: 375px) and (max-device-width: 812px){ 
+  .appName{
+    height: 6vh;
+    text-align: center;
+    justify-content: center;
+    padding: 0px;
+  }
+
+  .mainContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0px;
+  }
+  
+  .currentWeather{
+    width: 100vw;
+    height: 50vh;
+    padding: 32px 24px;
+  }
+  
+  .fiveDays{
+    width: 100vw;
+    height: 80vh;
+    padding: 32px 24px;
+  }
+
+  .fiveDaysHead{
+    margin-bottom: 24px;
+  }
+  
+  .search {
+    padding: 8px;
+    width: 90vw;
+    margin-bottom: 0px;
+    font-size: 16px;
+  }
+  
+  .forecast {
+    justify-content: space-between;
+  }
+  
+  .forecastWeatherCityName {
+    margin-bottom: 8px;
+  }
+  
+  .currentWeatherInfo {
+    margin-bottom: 24px;
+  }
+  
+  .forecastTemp {
+    font-size: 40px;
+  }
+
+  .footer {
+    height: 4vh;
+    text-align: center;
+    justify-content: center;
+    padding: 0px;
   }
 }

@@ -58,7 +58,7 @@ export default function Home() {
       <header className="appName">
         <h1>Weather App</h1>
       </header>
-      <main className={`flex flex-row items-center justify-between`}>
+      <main className="mainContainer">
         <div className="currentWeather">
           <form onSubmit={handleSubmit}>
             <input 
@@ -109,12 +109,13 @@ export default function Home() {
                 <p className="forecastTemp">{(fiveDaysWeather.list[0].main.temp).toFixed(1)}<span>°C</span></p>                
               </div>
 
-              <div>
+              <div className="forecastIconMain">
                 <Image
                   src={`icons/forecast/${fiveDaysWeather.list[0].weather[0].icon}.svg`}
                   width={40}
                   height={40}
                   alt={fiveDaysWeather.list[0].weather[0].main}
+                  className="forecastIconSize"
                 />
                 <p>{fiveDaysWeather.list[0].weather[0].main}</p>
               </div>
@@ -136,12 +137,13 @@ export default function Home() {
                 <p className="forecastTemp">{(fiveDaysWeather.list[8].main.temp).toFixed(1)}<span>°C</span></p>                
               </div>
 
-              <div>
+              <div className="forecastIconMain">
                 <Image
                   src={`icons/forecast/${fiveDaysWeather.list[8].weather[0].icon}.svg`}
                   width={40}
                   height={40}
                   alt={fiveDaysWeather.list[8].weather[0].main}
+                  className="forecastIconSize"
                 />
                 <p>{fiveDaysWeather.list[8].weather[0].main}</p>
               </div>
@@ -163,12 +165,13 @@ export default function Home() {
                 <p className="forecastTemp">{(fiveDaysWeather.list[16].main.temp).toFixed(1)}<span>°C</span></p>                
               </div>
 
-              <div>
+              <div className="forecastIconMain">
                 <Image
                   src={`icons/forecast/${fiveDaysWeather.list[16].weather[0].icon}.svg`}
                   width={40}
                   height={40}
                   alt={fiveDaysWeather.list[16].weather[0].main}
+                  className="forecastIconSize"
                 />
                 <p>{fiveDaysWeather.list[16].weather[0].main}</p>
               </div>
@@ -190,12 +193,13 @@ export default function Home() {
                 <p className="forecastTemp">{(fiveDaysWeather.list[24].main.temp).toFixed(1)}<span>°C</span></p>                
               </div>
 
-              <div>
+              <div className="forecastIconMain">
                 <Image
                   src={`icons/forecast/${fiveDaysWeather.list[24].weather[0].icon}.svg`}
                   width={40}
                   height={40}
                   alt={fiveDaysWeather.list[24].weather[0].main}
+                  className="forecastIconSize"
                 />
                 <p>{fiveDaysWeather.list[24].weather[0].main}</p>
               </div>
@@ -217,12 +221,13 @@ export default function Home() {
                 <p className="forecastTemp">{(fiveDaysWeather.list[32].main.temp).toFixed(1)}<span>°C</span></p>                
               </div>
 
-              <div>
+              <div className="forecastIconMain">
                 <Image
                   src={`icons/forecast/${fiveDaysWeather.list[32].weather[0].icon}.svg`}
                   width={40}
                   height={40}
                   alt={fiveDaysWeather.list[32].weather[0].main}
+                  className="forecastIconSize"
                 />
                 <p>{fiveDaysWeather.list[32].weather[0].main}</p>
               </div>
