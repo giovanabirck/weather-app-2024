@@ -14,8 +14,8 @@ export default function Home() {
   async function fetchData() {
 
     try {
-      const resCurrentWeather = await fetch(`http://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}&units=metric`);
-      const resFiveDaysWeather = await fetch(`http://api.openweathermap.org/data/2.5/forecast?q=${cityName}&appid=${apiKey}&units=metric`)
+      const resCurrentWeather = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}&units=metric`);
+      const resFiveDaysWeather = await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&appid=${apiKey}&units=metric`)
       
       if(!resCurrentWeather.ok || !resFiveDaysWeather.ok) {
         throw new Error(`Could not find city by name ${cityName}`);
