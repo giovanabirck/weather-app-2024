@@ -1,118 +1,201 @@
-import Image from "next/image";
-import { Inter } from "next/font/google";
+import { useState, useEffect } from "react";
 
-const inter = Inter({ subsets: ["latin"] });
+const apiKey = process.env.NEXT_PUBLIC_API;
 
 export default function Home() {
+  const [cityName, setCityName] = useState<string>();
+  const [weatherData, setWeatherData] = useState<IWeather>();
+  const [fiveDaysWeather, setFiveDaysWeather] = useState<IFiveDays>();
+  const [error, setError] = useState<string | null>(null);
+  const [lastUpdated, setLastUpdated] = useState<string>("");
+
+
+  async function fetchData() {
+
+    try {
+      const resCurrentWeather = await fetch(`http://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}&units=metric`);
+      const resFiveDaysWeather = await fetch(`http://api.openweathermap.org/data/2.5/forecast?q=${cityName}&appid=${apiKey}&units=metric`)
+      
+      if(!resCurrentWeather.ok || !resFiveDaysWeather.ok) {
+        throw new Error(`Could not find city by name ${cityName}`);
+      }
+    
+      const currentWeatherData = await resCurrentWeather.json();
+      const fiveDaysWeather = await resFiveDaysWeather.json();
+
+      setWeatherData(currentWeatherData);
+      setFiveDaysWeather(fiveDaysWeather);
+      setError(null);
+
+      const date = new Date(currentWeatherData.dt * 1000);
+      setLastUpdated(`${date.toLocaleString('en-US', { month: 'long' })} ${date.getDate()}, ${date.getFullYear()}`);
+    } catch(error: any) {
+      setError(error.message);
+    }
+  }
+
+  const handleChange = (event: any) => {
+    setCityName(event.target.value);
+    setError(null);
+  };
+
+  const handleSubmit = (event: any) => {
+    event.preventDefault()
+    fetchData();
+  };
+
+  const formatFix = (event: any) => {
+    const date = new Date(event);
+    const month = date.toLocaleString('en-US', { month: 'short' });
+    const day = date.getDate();
+    const year = date.getFullYear();
+    return `${month} ${day}, ${year}`;
+  };
+
   return (
-    <main
-      className={`flex min-h-screen flex-col items-center justify-between p-24 ${inter.className}`}
-    >
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/pages/index.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
+    <>
+      <header className="appName">
+        <h1>Weather App</h1>
+      </header>
+      <main className={`flex flex-row items-center justify-between`}>
+        <div className="currentWeather">
+          <form onSubmit={handleSubmit}>
+            <input 
+              type="text" 
+              placeholder="Write city name" 
+              value={cityName} 
+              onChange={handleChange} 
+              className="search"
             />
-          </a>
+            <button type="submit"></button>
+          </form>
+
+          {error && <p>{error}</p>}
+
+          {weatherData && (
+            <div>
+              <h2 className="forecastWeatherCityName">Weather in <span className="forecastCityName">{weatherData.name}</span></h2>
+              <div className="currentWeatherInfo">
+                <p className="currentWeatherTemp">{(weatherData.main.temp).toFixed(0)}<span className="forecastTemp">°C</span></p>
+                <p>{weatherData.weather[0].main}</p>
+                <p>Wind: {(weatherData.wind.speed * 3.6).toFixed(1)}km/h</p>
+              </div>
+              <p>Last Updated: <br/> {lastUpdated}</p>
+            </div>
+          )}
         </div>
-      </div>
 
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-full sm:before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full sm:after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700/10 after:dark:from-sky-900 after:dark:via-[#0141ff]/40 before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
+        <div className="fiveDays">
+          <h1 className="fiveDaysHead">5-Day Forecast</h1>
 
-      <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
+          {/* Day 01 */}
+          {fiveDaysWeather && (
+            <div className="forecast">
+              <div>
+                <p className="forecastDate">{formatFix(fiveDaysWeather.list[0].dt_txt)}</p>
+                <p className="forecastTemp">{(fiveDaysWeather.list[0].main.temp).toFixed(1)}<span>°C</span></p>                
+              </div>
 
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
+              <div>
+                  <p>{fiveDaysWeather.list[0].weather[0].main}</p>
+              </div>
 
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Discover and deploy boilerplate example Next.js&nbsp;projects.
-          </p>
-        </a>
+              <div className="forecastWeather">
+                  <p>{fiveDaysWeather.list[0].weather[0].description}</p>
+                  <p>Wind: {(fiveDaysWeather.list[0].wind.speed * 3.6).toFixed(1)}km/h</p>
+              </div>
+            </div>
+          )}
 
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50 text-balance`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+          <br/>
+
+          {/* Day 02 */}
+          {fiveDaysWeather && (
+            <div className="forecast">
+              <div>
+                <p className="forecastDate">{formatFix(fiveDaysWeather.list[8].dt_txt)}</p>
+                <p className="forecastTemp">{(fiveDaysWeather.list[8].main.temp).toFixed(1)}<span>°C</span></p>                
+              </div>
+
+              <div>
+                  <p>{fiveDaysWeather.list[8].weather[0].main}</p>
+              </div>
+
+              <div className="forecastWeather">
+                  <p>{fiveDaysWeather.list[8].weather[0].description}</p>
+                  <p>Wind: {(fiveDaysWeather.list[8].wind.speed * 3.6).toFixed(1)}km/h</p>
+              </div>
+            </div>
+          )}
+
+          <br/>
+
+          {/* Day 03 */}
+          {fiveDaysWeather && (
+            <div className="forecast">
+              <div>
+                <p className="forecastDate">{formatFix(fiveDaysWeather.list[16].dt_txt)}</p>
+                <p className="forecastTemp">{(fiveDaysWeather.list[16].main.temp).toFixed(1)}<span>°C</span></p>                
+              </div>
+
+              <div>
+                  <p>{fiveDaysWeather.list[16].weather[0].main}</p>
+              </div>
+
+              <div className="forecastWeather">
+                  <p>{fiveDaysWeather.list[16].weather[0].description}</p>
+                  <p>Wind: {(fiveDaysWeather.list[16].wind.speed * 3.6).toFixed(1)}km/h</p>
+              </div>
+            </div>
+          )}
+
+          <br/>
+
+          {/* Day 04 */}
+          {fiveDaysWeather && (
+            <div className="forecast">
+              <div>
+                <p className="forecastDate">{formatFix(fiveDaysWeather.list[24].dt_txt)}</p>
+                <p className="forecastTemp">{(fiveDaysWeather.list[24].main.temp).toFixed(1)}<span>°C</span></p>                
+              </div>
+
+              <div>
+                  <p>{fiveDaysWeather.list[24].weather[0].main}</p>
+              </div>
+
+              <div className="forecastWeather">
+                  <p>{fiveDaysWeather.list[24].weather[0].description}</p>
+                  <p>Wind: {(fiveDaysWeather.list[24].wind.speed * 3.6).toFixed(1)}km/h</p>
+              </div>
+            </div>
+          )}
+
+          <br/>
+
+          {/* Day 05 */}
+          {fiveDaysWeather && (
+            <div className="forecast">
+              <div>
+                <p className="forecastDate">{formatFix(fiveDaysWeather.list[32].dt_txt)}</p>
+                <p className="forecastTemp">{(fiveDaysWeather.list[32].main.temp).toFixed(1)}<span>°C</span></p>                
+              </div>
+
+              <div>
+                  <p>{fiveDaysWeather.list[32].weather[0].main}</p>
+              </div>
+
+              <div className="forecastWeather">
+                  <p>{fiveDaysWeather.list[32].weather[0].description}</p>
+                  <p>Wind: {(fiveDaysWeather.list[32].wind.speed * 3.6).toFixed(1)}km/h</p>
+              </div>
+            </div>
+          )}
+          
+        </div>
+      </main>
+      <footer className="footer">
+        <p>Created by Giovana Birck</p>
+      </footer>
+    </>
   );
 }
